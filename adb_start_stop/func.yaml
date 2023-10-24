@@ -1,4 +1,4 @@
-schema_version: 20231024
+schema_version: 20180708
 name: adb_start_stop
 version: 0.0.0
 runtime: python
