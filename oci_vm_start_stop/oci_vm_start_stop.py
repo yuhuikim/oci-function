@@ -6,17 +6,25 @@
 
 import oci
 
+
 # Create a default config using DEFAULT profile in default location
 # Refer to
 # https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm#SDK_and_CLI_Configuration_File
 # for more info
-config = oci.config.from_file()
-
-# Initialize service client with default config file
-core_client = oci.core.ComputeClient(config)
 
 
-def oci_vm_start_stop(instance_id, action):
+def get_config(user_ocid, private_key_file, fingerprint, tenancy_ocid, region):
+    config = {
+        "user": user_ocid,
+        "key_file": private_key_file,
+        "fingerprint": fingerprint,
+        "tenancy": tenancy_ocid,
+        "region": region
+    }
+    return config
+
+
+def oci_vm_start_stop(core_client, instance_id, action):
     # Send the request to service, some parameters are not required, see API
     # doc for more info
     if action in ("start", "START", "stop", "STOP"):
@@ -33,11 +41,19 @@ def oci_vm_start_stop(instance_id, action):
         # Get the data from response
         print(instance_action_response.data)
     else:
-        return "Bad Request"
+        raise Exception(f"instance {action} failed")
+
+
+def handler(user_ocid, private_key_file, fingerprint, tenancy_ocid, region, instance_id, action):
+    # user_ocid, private_key_file, fingerprint, tenancy_ocid, region
+    config = get_config(user_ocid, private_key_file, fingerprint, tenancy_ocid, region)
+    core_client = oci.core.ComputeClient(config)
+    # instance_id, action
+    oci_vm_start_stop(core_client, instance_id, action)
 
 
 # Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    oci_vm_start_stop('ocid1.instance.oc1.ap-seoul-1.anuwgljrzwnc6yacvbjwzp5dglfcsovrd3s5vjlcp2bgq4j', 'd')
+# if __name__ == '__main__':
+#     oci_vm_start_stop('ocid1.instance.oc1.ap-seoul-1.anuwgljrzwnc6yacvbjwzp5dglfcsovrd3s5vjlcp2bgq4j', 'd')
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

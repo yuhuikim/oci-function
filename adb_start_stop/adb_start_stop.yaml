@@ -1,0 +1,8 @@
+schema_version: 20231024
+name: adb_start_stop
+version: 0.0.0
+runtime: python
+build_image: fnproject/python:3.9-dev
+run_image: fnproject/python:3.9
+entrypoint: /python/bin/fdk /function/adb_start_stop.py handler
+memory: 256

@@ -27,7 +27,7 @@ def oci_adb_start_stop(autonomous_database_id, action):
 
         # Get the data from response
         print(start_autonomous_database_response.data)
-    elif action in ('stop', "STOP"):
+    elif action in ('stop', 'STOP'):
         stop_autonomous_database_response = database_client.stop_autonomous_database(
             autonomous_database_id=autonomous_database_id,
             # if_match="EXAMPLE-ifMatch-Value",
@@ -37,8 +37,8 @@ def oci_adb_start_stop(autonomous_database_id, action):
         # Get the data from response
         print(stop_autonomous_database_response.data)
     else:
-        return "Bad request"
+        raise Exception(f"instance {action} failed")
 
 
-if __name__ == '__main__':
-    oci_adb_start_stop('ocid1.autonomousdatabase.oc1.ap-seoul-1.anuwgljrzwnc6yaa3fmxo4swxmtu7pezrzfry2iwua5', 'START')
+# if __name__ == '__main__':
+#     oci_adb_start_stop('ocid1.autonomousdatabase.oc1.ap-seoul-1.anuwgljrzwnc6yaa3fmxo4swxmtu7pezrzfry2iwua5', 'START')
